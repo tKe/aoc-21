@@ -1,2 +1,4 @@
-# aoc-21
-AdventOfCode 2021
+# AdventOfCode 2021
+
+## Day 1 Solutions
+* ...
