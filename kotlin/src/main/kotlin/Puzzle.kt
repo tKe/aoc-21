@@ -1,4 +1,3 @@
-import kotlin.reflect.KClass
 import kotlin.system.measureTimeMillis
 
 interface InputCtx {
@@ -41,7 +40,8 @@ open class Puzzle(val year: Int, val day: Int, solutionDefinition: PuzzleCtx.() 
                 }
             }
         }
-        inline fun <reified T: Puzzle> main() {
+
+        inline fun <reified T : Puzzle> main() {
             T::class.sealedSubclasses
                 .mapNotNull { it.objectInstance }
                 .forEach(::main)

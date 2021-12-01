@@ -21,4 +21,3 @@ object Day01 : Puzzle2021(1, {
 })
 
 fun main() = Puzzle.main(Day01)
-
