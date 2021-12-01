@@ -8,3 +8,4 @@ e.g. `./inputs/year-2021/day-01/input.txt` and `./inputs/year-2021/day-01/exampl
 * 2021
   * Day 1
     * [kotlin](./kotlin/src/main/kotlin/year2021/Day01.kt)
+    * [scala](./scala/src/main/scala/year2021/Day01.scala)

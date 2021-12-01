@@ -12,3 +12,7 @@
 gradle-app.setting
 !gradle-wrapper.jar
 .gradletasknamecache
+
+# sbt related stuffs
+**/target/
+!src/**/target/
