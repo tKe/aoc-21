@@ -1,7 +1,9 @@
 # AdventOfCode 2021
 
 ## Inputs
-Inputs are expected to be placed in `./inputs/year-<YYYY>/day-<DD>/` folders.
+Inputs are expected to be placed in `./inputs/year-<YYYY>/day-<DD>/` folders
+_or_ `../aoc-21-inputs/year-<YYYY>/day-<DD>/`.
+
 e.g. `./inputs/year-2021/day-01/input.txt` and `./inputs/year-2021/day-01/example.txt`
 
 ## Solutions
@@ -9,3 +11,5 @@ e.g. `./inputs/year-2021/day-01/input.txt` and `./inputs/year-2021/day-01/exampl
   * Day 1
     * [kotlin](./kotlin/src/main/kotlin/year2021/Day01.kt)
     * [scala](./scala/src/main/scala/year2021/Day01.scala)
+  * Day 2
+    * [kotlin](./kotlin/src/main/kotlin/year2021/Day02.kt)

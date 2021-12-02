@@ -35,7 +35,13 @@ open class Puzzle(val year: Int, val day: Int, solutionDefinition: PuzzleCtx.() 
             with(SolutionCtx(puzzle)) {
                 solutions.forEach { (name, solution) ->
                     lateinit var result: Any
-                    val duration = measureTimeMillis { result = solution() }
+                    val duration = measureTimeMillis {
+                        result = try {
+                            solution()
+                        } catch (ex: NotImplementedError) {
+                            "unsolved"
+                        }
+                    }
                     println("\t$name (took ${duration}ms): $result")
                 }
             }
