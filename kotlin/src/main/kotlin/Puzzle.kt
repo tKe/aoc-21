@@ -6,21 +6,23 @@ interface InputCtx {
     fun <R> SolutionCtx.withInput(name: String = "input.txt", block: (Sequence<String>) -> R) =
         util.withInput(resolveInput(name), block)
 
+    fun SolutionCtx.getInput(name: String = "input.txt") = withInput { it.toList() }
+
     companion object Default : InputCtx {
         override fun SolutionCtx.resolveInput(name: String) =
             "year-${puzzle.year}/day-${puzzle.day.toString().padStart(2, '0')}/$name"
     }
 }
 
-data class SolutionCtx(val puzzle: Puzzle, val inputCtx: InputCtx = InputCtx.Default) : InputCtx by inputCtx
+class SolutionCtx(val puzzle: Puzzle, private val inputCtx: InputCtx = InputCtx.Default) : InputCtx by inputCtx {
+    val input by lazy { getInput() }
+}
 
 typealias Solution = SolutionCtx.() -> Any
 
 open class Puzzle(val year: Int, val day: Int, solutionDefinition: PuzzleCtx.() -> Unit) {
-    val solutions by lazy {
-        buildMap {
-            PuzzleCtx(this::put).solutionDefinition()
-        }
+    val solutions = buildMap {
+        PuzzleCtx(this::put).solutionDefinition()
     }
 
     fun interface PuzzleCtx {
