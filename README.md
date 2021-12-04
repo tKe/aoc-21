@@ -15,3 +15,5 @@ e.g. `./inputs/year-2021/day-01/input.txt` and `./inputs/year-2021/day-01/exampl
     * [kotlin](./kotlin/src/main/kotlin/year2021/Day02.kt)
   * Day 3
     * [kotlin](./kotlin/src/main/kotlin/year2021/Day03.kt)
+  * Day 4
+    * [kotlin](./kotlin/src/main/kotlin/year2021/Day04.kt)
