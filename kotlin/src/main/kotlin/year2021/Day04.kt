@@ -32,7 +32,7 @@ object Day04 : Puzzle2021(4, {
 })
 
 @JvmInline
-private value class Grid(private val arr: IntArray = IntArray(26)) {
+private value class Grid private constructor(private val arr: IntArray = IntArray(26)) {
     val bingo: Boolean get() = checkMarks(5, rowMask) || checkMarks(1, colMask)
     val score: Int
         get() = arr.foldIndexed(0) { index, acc, value ->
@@ -76,29 +76,23 @@ private value class Grid(private val arr: IntArray = IntArray(26)) {
     companion object {
         private const val rowMask = 0b11111
         private const val colMask = 0b100001000010000100001
+        fun create(values: IntArray) = Grid(values.also { require(it.size == 25) }.copyOf(26))
     }
 }
 
 private val SolutionCtx.game
     get() = withInput { lines ->
         with(lines.iterator()) {
-            check(hasNext()) { "empty input" }
-            val calls = next().splitToSequence(',').map(String::toInt).toList()
-            val grids = buildList {
-                while (hasNext()) {
-                    check(next().isBlank()) { "unexpected content" }
-                    this += Grid().also { grid ->
-                        repeat(5) { row ->
-                            check(hasNext()) { "not enough rows for grid" }
-                            next().splitToSequence(" ")
-                                .filter { it.isNotBlank() }
-                                .map(String::toInt)
-                                .forEachIndexed { col, value -> grid[row, col] = value }
-                        }
-                    }
-                }
-            }
-
+            check(hasNext()) { "empty input?" }
+            val calls = next().split(',').map(String::toInt)
+            val grids = asSequence().chunked(6) { chunk ->
+                check(chunk.first().isBlank())
+                chunk.flatMap { it.splitToSequence(" ") }
+                    .filter(String::isNotBlank)
+                    .map(String::toInt)
+                    .toIntArray()
+                    .let(Grid::create)
+            }.toList()
             calls to grids
         }
     }
