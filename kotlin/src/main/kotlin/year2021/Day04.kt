@@ -68,19 +68,16 @@ private data class Grid(private val arr: List<Int>, private val marks: Int = 0) 
 }
 
 private val SolutionCtx.game
-    get() = withInput { lines ->
-        with(lines.iterator()) {
-            check(hasNext()) { "empty input?" }
-            val calls = next().split(',').map(String::toInt)
-            val grids = asSequence().chunked(6) { chunk ->
-                check(chunk.first().isBlank())
-                chunk.flatMap { it.splitToSequence(" ") }
-                    .filter(String::isNotBlank)
-                    .map(String::toInt)
-                    .let(::Grid)
-            }.toList()
-            calls to grids
+    get() = with(input) {
+        val calls = first().split(',').map(String::toInt)
+        val grids = subList(1, size).chunked(6) { chunk ->
+            check(chunk.size == 6 && chunk.first().isBlank()) { "invalid chunk" }
+            chunk.flatMap { line -> line.splitToSequence(" ") }
+                .filter(String::isNotBlank)
+                .map(String::toInt)
+                .let(::Grid)
         }
+        calls to grids
     }
 
 fun main() = Puzzle.main(Day04)
