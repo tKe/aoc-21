@@ -5,69 +5,52 @@ import SolutionCtx
 
 object Day04 : Puzzle2021(4, {
     solution("part1") {
-        val (calls, grids) = game
-        calls.forEach { call ->
-            grids.forEach { grid ->
-                grid.play(call)
-                if (grid.bingo) {
-                    return@solution call * grid.score
-                }
+        val (calls, initialGrids) = game
+        calls
+            .runningFold(-1 to initialGrids) { (_, grids), call ->
+                call to grids.map { grid -> grid.play(call) }
             }
-        }
-        error("No solution")
+            .first { (_, grids) -> grids.any { grid -> grid.bingo } }
+            .let { (call, grids) -> call * grids.single { it.bingo }.score }
     }
 
     solution("part2") {
-        val (calls, grids) = game
-        calls.forEach { call ->
-            grids.forEach { grid ->
-                grid.play(call)
-                if (grids.all { it.bingo }) {
-                    return@solution call * grid.score
-                }
+        val (calls, initialGrids) = game
+        calls
+            .runningFold(Triple(-1, initialGrids, emptyList<Grid>())) { (_, grids, _), call ->
+                val (bingo, remaining) = grids.map { grid -> grid.play(call) }.partition { it.bingo }
+                Triple(call, remaining, bingo)
             }
-        }
-        error("No solution")
+            .first { (_, remaining, _) -> remaining.isEmpty() }
+            .let { (call, _, grids) -> call * grids.last().score }
     }
 })
 
-@JvmInline
-private value class Grid private constructor(private val arr: IntArray = IntArray(26)) {
-    val bingo: Boolean get() = checkMarks(5, rowMask) || checkMarks(1, colMask)
-    val score: Int
-        get() = arr.foldIndexed(0) { index, acc, value ->
-            acc + if (isMarked(index) || index == 25) 0 else value
-        }
+private data class Grid(private val arr: List<Int>, private val marks: Int = 0) {
+    init {
+        check(arr.size == 25)
+    }
 
-    operator fun set(row: Int, col: Int, value: Int) = arr.set(idx(row, col), value)
-    operator fun get(row: Int, col: Int) = arr[idx(row, col)]
+    val bingo = checkMarks(5, rowMask) || checkMarks(1, colMask)
 
-    fun play(value: Int) = repeat(25) { idx -> if (arr[idx] == value) mark(idx) }
+    val score = arr.foldIndexed(0) { index, acc, value ->
+        acc + if (isMarked(index) || index == 25) 0 else value
+    }
+
+    fun play(value: Int): Grid = copy(marks = arr.foldIndexed(marks) { index, acc, i ->
+        if (i == value) acc or (1 shl index)
+        else acc
+    })
 
     private fun checkMarks(shift: Int, mask: Int) =
         generateSequence(marks) { it shr shift }.take(5).any { (it and mask) == mask }
 
-    private fun idx(row: Int, col: Int): Int {
-        check(row < 5 && col < 5)
-        return row * 5 + col
-    }
-
-    private fun mark(index: Int) {
-        marks = marks or (1 shl index)
-    }
-
     private fun isMarked(index: Int) = (marks shr index) and 1 == 1
-
-    private var marks
-        get() = arr[25]
-        set(value) {
-            arr[25] = value
-        }
 
     override fun toString() =
         (0 until 5).joinToString("\n") { row ->
             (0 until 5).joinToString(" ") { col ->
-                val s = get(row, col).toString().padStart(2, ' ')
+                val s = arr[idx(row, col)].toString().padStart(2, ' ')
                 if (isMarked(idx(row, col))) "($s)"
                 else " $s "
             }
@@ -76,7 +59,11 @@ private value class Grid private constructor(private val arr: IntArray = IntArra
     companion object {
         private const val rowMask = 0b11111
         private const val colMask = 0b100001000010000100001
-        fun create(values: IntArray) = Grid(values.also { require(it.size == 25) }.copyOf(26))
+
+        private fun idx(row: Int, col: Int): Int {
+            check(row < 5 && col < 5)
+            return row * 5 + col
+        }
     }
 }
 
@@ -90,12 +77,10 @@ private val SolutionCtx.game
                 chunk.flatMap { it.splitToSequence(" ") }
                     .filter(String::isNotBlank)
                     .map(String::toInt)
-                    .toIntArray()
-                    .let(Grid::create)
+                    .let(::Grid)
             }.toList()
             calls to grids
         }
     }
-
 
 fun main() = Puzzle.main(Day04)
