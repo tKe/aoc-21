@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
 def check_bingo(grid, called):
-    for r in range(0, 25, 5):
-        if len([x for x in grid[r:r + 5] if x in called]) == 5:
+    for r in range(0, len(grid), 5):
+        if all(x in called for x in grid[r:r + 5]):
             return True
     for c in range(5):
-        if len([x for x in grid[c::5] if x in called]) == 5:
+        if all(x in called for x in grid[c::5]):
             return True
     return False
 
