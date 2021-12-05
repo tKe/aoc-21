@@ -15,8 +15,7 @@ def score(grid, called):
 
 
 def part1():
-    for i in range(1, len(calls)):
-        called = calls[:i]
+    for called in (calls[:i] for i in range(1, len(calls))):
         for grid in grids:
             if check_bingo(grid, called):
                 return called[-1] * score(grid, called)
@@ -24,11 +23,10 @@ def part1():
 
 def part2():
     playing = grids[:]
-    for i in range(1, len(calls)):
-        called = calls[:i]
+    for called in (calls[:i] for i in range(1, len(calls))):
         results = [(grid, check_bingo(grid, called)) for grid in playing]
         remaining = [grid for (grid, bingo) in results if not bingo]
-        if len(remaining) == 0:
+        if not remaining:
             wins = [grid for (grid, bingo) in results if bingo]
             return called[-1] * score(wins[-1], called)
         playing = remaining
