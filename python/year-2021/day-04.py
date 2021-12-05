@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
 def check_bingo(grid, called):
-    for r in range(5):
-        if len([x for x in grid[r * 5:r * 5 + 5] if x in called]) == 5: return True
+    for r in range(0, 25, 5):
+        if len([x for x in grid[r:r + 5] if x in called]) == 5:
+            return True
     for c in range(5):
-        if len([x for x in grid[c::5] if x in called]) == 5: return True
+        if len([x for x in grid[c::5] if x in called]) == 5:
+            return True
     return False
 
 
@@ -39,7 +41,7 @@ calls = [int(n) for n in lines[0].split(',')]
 grids = [
     [int(n) for n in chunk if len(n)]
     for chunk in (
-        (x.strip() for x in ' '.join(lines[ofs:ofs+6]).split(' '))
+        (x.strip() for x in ' '.join(lines[ofs:ofs + 6]).split(' '))
         for ofs in range(1, len(lines), 6)
     )
 ]
