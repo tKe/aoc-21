@@ -4,7 +4,7 @@ import Puzzle
 import SolutionCtx
 
 object Day05 : Puzzle2021(5, {
-    infix fun Int.through(other: Int) = minOf(this, other)..maxOf(this, other)
+    infix fun Int.through(other: Int) = if (this > other) downTo(other) else rangeTo(other)
     data class Coord(val x: Int, val y: Int)
     data class Line(val from: Coord, val to: Coord) {
         val isHorizontal = from.y == to.y
@@ -46,6 +46,5 @@ object Day05 : Puzzle2021(5, {
             .count { (_, v) -> v >= 2 }
     }
 })
-
 
 fun main() = Puzzle.main(Day05)
