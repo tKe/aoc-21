@@ -4,7 +4,7 @@ import Puzzle
 import SolutionCtx
 
 object Day04 : Puzzle2021(4, {
-    solution("part1") {
+    part1 {
         val (calls, initialGrids) = game
         calls
             .runningFold(-1 to initialGrids) { (_, grids), call ->
@@ -14,7 +14,7 @@ object Day04 : Puzzle2021(4, {
             .let { (call, grids) -> call * grids.single { it.bingo }.score }
     }
 
-    solution("part2") {
+    part2 {
         val (calls, initialGrids) = game
         calls
             .runningFold(Triple(-1, initialGrids, emptyList<Grid>())) { (_, grids, _), call ->

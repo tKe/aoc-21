@@ -19,7 +19,7 @@ object Day02 : Puzzle2021(2, {
         .fold(Location()) { location, (move, amount) -> location.move(amount) }
         .let { (a, b) -> a * b }
 
-    solution("part1") {
+    part1 {
         input.drive(
             up = { copy(depth = depth - it) },
             down = { copy(depth = depth + it) },
@@ -27,7 +27,7 @@ object Day02 : Puzzle2021(2, {
         )
     }
 
-    solution("part2") {
+     part2 {
         input.drive(
             up = { copy(aim = aim - it) },
             down = { copy(aim = aim + it) },

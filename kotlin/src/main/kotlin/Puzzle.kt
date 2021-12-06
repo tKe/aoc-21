@@ -27,6 +27,9 @@ open class Puzzle(val year: Int, val day: Int, solutionDefinition: PuzzleCtx.() 
 
     fun interface PuzzleCtx {
         fun solution(name: String, solution: Solution)
+        fun part1(solution: Solution) = solution("part1", solution)
+        fun part2(solution: Solution) = solution("part2", solution)
+        operator fun String.invoke(solution: Solution) = solution(this, solution)
     }
 
     operator fun get(name: String): Solution = (solutions[name] ?: error("no solution defined for [$name]"))
@@ -39,7 +42,7 @@ open class Puzzle(val year: Int, val day: Int, solutionDefinition: PuzzleCtx.() 
                     lateinit var result: Any
                     val duration = measureTimeMillis {
                         result = try {
-                            solution()
+                            solution().takeIf { it != Unit } ?: "unsolved"
                         } catch (ex: NotImplementedError) {
                             "unsolved"
                         }

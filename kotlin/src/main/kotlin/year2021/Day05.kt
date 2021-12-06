@@ -29,7 +29,7 @@ object Day05 : Puzzle2021(5, {
             .let { (from, to) -> Line(from, to) }
     }
 
-    solution("part1") {
+    part1 {
         parseLines()
             .filterNot(Line::isDiagonal)
             .flatMap(Line::coords)
@@ -38,7 +38,7 @@ object Day05 : Puzzle2021(5, {
             .count { (_, v) -> v >= 2 }
     }
 
-    solution("part2") {
+    part2 {
         parseLines()
             .flatMap(Line::coords)
             .groupingBy { it }

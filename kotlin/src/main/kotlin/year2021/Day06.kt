@@ -14,11 +14,11 @@ object Day06 : Puzzle2021(6, {
         List(9) { state[(it + 1) % 9] + if (it == 6) state[0] else 0 }
     }
 
-    solution("part1") {
+    part1 {
         initialState().simulate(80).sum()
     }
 
-    solution("part2") {
+    part2 {
         initialState().simulate(256).sum()
     }
 })

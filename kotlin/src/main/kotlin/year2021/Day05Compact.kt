@@ -14,8 +14,8 @@ object Day05Compact : Puzzle2021(5, {
                     .zip(if (y1 == y2) cycle(y1) else y1 through y2)
             }
             .groupBy { it }.count { (_, v) -> v.size > 1 }
-    solution("part1") { countDangers(includeDiagonals = false) }
-    solution("part2") { countDangers(includeDiagonals = true) }
+    part1 { countDangers(includeDiagonals = false) }
+    part2 { countDangers(includeDiagonals = true) }
 })
 
 fun main() = Puzzle.main(Day05Compact)

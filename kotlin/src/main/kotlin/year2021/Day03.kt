@@ -5,7 +5,7 @@ import Puzzle
 object Day03 : Puzzle2021(3, {
     fun Int.inv(bits: Int) = xor((-1 shl bits).inv())
 
-    solution("part1") {
+    part1 {
         val length = input.first().length
         val ones = IntArray(length)
         input.forEach { line ->
@@ -23,7 +23,7 @@ object Day03 : Puzzle2021(3, {
         gammaRate * epsilonRate
     }
 
-    solution("part2") {
+    part2 {
         fun List<String>.decode(predicate: (ones: Int, zeros: Int) -> Boolean): Int = toMutableList().run {
             val length = first().length
             for (idx in 0 until length) {
