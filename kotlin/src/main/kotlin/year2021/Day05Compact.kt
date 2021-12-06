@@ -3,7 +3,7 @@ package year2021
 import Puzzle
 import SolutionCtx
 
-object Day05b : Puzzle2021(5, name = "compact", def = {
+object Day05Compact : Puzzle2021(5, {
     infix fun Int.through(other: Int) = if (this > other) downTo(other) else rangeTo(other)
     fun <T> cycle(vararg elements: T) = generateSequence { elements.asSequence() }.flatten().asIterable()
     fun SolutionCtx.countDangers(includeDiagonals: Boolean) = input.asSequence()
@@ -18,4 +18,4 @@ object Day05b : Puzzle2021(5, name = "compact", def = {
     solution("part2") { countDangers(includeDiagonals = true) }
 })
 
-fun main() = Puzzle.main(Day05b)
+fun main() = Puzzle.main(Day05Compact)

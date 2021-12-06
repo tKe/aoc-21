@@ -20,7 +20,7 @@ class SolutionCtx(val puzzle: Puzzle, private val inputCtx: InputCtx = InputCtx.
 
 typealias Solution = SolutionCtx.() -> Any
 
-open class Puzzle(val year: Int, val day: Int, val name: String? = null, solutionDefinition: PuzzleCtx.() -> Unit) {
+open class Puzzle(val year: Int, val day: Int, solutionDefinition: PuzzleCtx.() -> Unit) {
     val solutions = buildMap {
         PuzzleCtx(this::put).solutionDefinition()
     }
@@ -33,7 +33,7 @@ open class Puzzle(val year: Int, val day: Int, val name: String? = null, solutio
 
     companion object {
         fun main(puzzle: Puzzle) = with(puzzle) {
-            println("Year $year, Day $day${name?.let { " [$it]"} ?: ""}")
+            println("Year $year, Day $day (${this::class.qualifiedName ?: "anon"})")
             with(SolutionCtx(puzzle)) {
                 solutions.forEach { (name, solution) ->
                     lateinit var result: Any
