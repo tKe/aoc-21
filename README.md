@@ -22,3 +22,6 @@ e.g. `./inputs/year-2021/day-01/input.txt` and `./inputs/year-2021/day-01/exampl
     * [kotlin](./kotlin/src/main/kotlin/year2021/Day05.kt)
     * [kotlin (compact)](./kotlin/src/main/kotlin/year2021/Day05b.kt)
     * [python](./python/year-2021/day-05.py)
+  * Day 6
+    * [kotlin](./kotlin/src/main/kotlin/year2021/Day06.kt)
+    * [python](./python/year-2021/day-06.py)
