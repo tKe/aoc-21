@@ -1,5 +1,6 @@
 package year2021
 
+import Puzzle
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.inspectors.forAll
 import solutionsShouldReturn
@@ -15,6 +16,7 @@ class Year2021Test : FunSpec({
                 5 -> it.solutionsShouldReturn(part1 = 5, part2 = 12)
                 6 -> it.solutionsShouldReturn(part1 = 5934, part2 = 26984457539)
                 7 -> it.solutionsShouldReturn(part1 = 37, part2 = 168)
+                8 -> it.solutionsShouldReturn(part1 = 26, part2 = 61229)
             }
         }
     }
