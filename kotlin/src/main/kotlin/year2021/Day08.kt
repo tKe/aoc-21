@@ -18,12 +18,11 @@ object Day08 : Puzzle2021(8, {
     }
 })
 
-private infix fun Map<Char, Char>.decode(code: List<String>) = code
-    .map { it.map(::getValue).sorted().joinToString("") }
-    .map(trueDigits::indexOf)
-    .joinToString("").toInt()
+private infix fun Map<Char, Char>.decode(code: List<String>) =
+    code.map { digits.indexOf(it.map(::getValue).toSet()) }.fold(0) { acc, i -> 10 * acc + i }
 
-private val trueDigits = listOf("abcefg", "cf", "acdeg", "acdfg", "bcdf", "abdfg", "abdefg", "acf", "abcdefg", "abcdfg")
+private val digits = listOf("abcefg", "cf", "acdeg", "acdfg", "bcdf", "abdfg", "abdefg", "acf", "abcdefg", "abcdfg")
+    .map(String::toSet)
 
 private fun List<String>.createDecoder() =
     flatMap(String::asSequence).groupingBy { it }.eachCount().mapValues { (seg, count) ->
