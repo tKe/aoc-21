@@ -52,10 +52,10 @@ open class Puzzle(val year: Int, val day: Int, solutionDefinition: PuzzleCtx.() 
             }
         }
 
+        inline fun <reified T: Puzzle> all() = T::class.sealedSubclasses.asSequence().mapNotNull { it.objectInstance }
+
         inline fun <reified T : Puzzle> main() {
-            T::class.sealedSubclasses
-                .mapNotNull { it.objectInstance }
-                .forEach(::main)
+            all<T>().forEach(::main)
         }
     }
 }
