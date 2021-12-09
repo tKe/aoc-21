@@ -36,7 +36,7 @@ object Day09 : Puzzle2021(9, {
                     }.firstNotNullOf { (basin, candidates) -> basin.takeIf { candidates.isEmpty() } }.size
                 }
                 .sortedDescending().take(3)
-                .fold(1, Int::times)
+                .reduce(Int::times)
         }
     }
 })
