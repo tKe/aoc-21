@@ -33,3 +33,5 @@ e.g. `./inputs/year-2021/day-01/input.txt` and `./inputs/year-2021/day-01/exampl
     * [python](./python/year-2021/day-08.py)
   * Day 9
     * [kotlin](./kotlin/src/main/kotlin/year2021/Day09.kt)
+  * Day 10
+    * [kotlin](./kotlin/src/main/kotlin/year2021/Day10.kt)
