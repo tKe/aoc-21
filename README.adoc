@@ -1,0 +1,72 @@
+= AdventOfCode 2021
+:img-py: https://emojis.slackmojis.com/emojis/images/1450319444/32/python.png
+:img-kt: https://emojis.slackmojis.com/emojis/images/1626243171/47442/kotlin.png
+:img-sc: https://emojis.slackmojis.com/emojis/images/1489318806/1857/scala.png
+
+== Inputs
+Inputs are expected to be placed in `./inputs/year-<YYYY>/day-<DD>/` folders
+_or_ `../aoc-21-inputs/year-<YYYY>/day-<DD>/`.
+
+e.g. `./inputs/year-2021/day-01/input.txt` and `./inputs/year-2021/day-01/example.txt`
+
+== Solutions
+
+[cols="7*^.^^"]
+|===
+7+>h| 2021
+h|M h|Tu h|W h|Th h|F h|Sa h|Su
+||| 1 +
+image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day01.kt,16]
+image:{img-sc}[link=scala/src/main/scala/year2021/Day01.scala,16]
+| 2 +
+image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day02.kt,16]
+&nbsp;
+| 3 +
+image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day03.kt,16]
+&nbsp;
+| 4 +
+image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day04.kt,16]
+image:{img-py}[link=python/year-2021/day-04.py,16]
+| 5 +
+image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day05.kt,16]
+image:{img-kt}[kotlin/src/main/kotlin/year2021/Day05Compact.kt,16,title="compact"]
+image:{img-py}[link=python/year-2021/day-05.py,16]
+| 6 +
+image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day06.kt,16]
+image:{img-py}[link=python/year-2021/day-06.py,16]
+| 7 +
+image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day07.kt,16]
+image:{img-py}[link=python/year-2021/day-07.py,16]
+| 8 +
+image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day08.kt,16]
+image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day08Bitset.kt,width=16,title="bitset"]
+image:{img-py}[link=python/year-2021/day-08.py,16]
+| 9 +
+image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day09.kt,16]
+&nbsp;
+| 10 +
+image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day10.kt,16]
+image:{img-py}[link=python/year-2021/day-10.py,16]
+| 11
+| 12
+| 13
+| 14
+| 15
+| 16
+| 17
+| 18
+| 19
+| 20
+| 21
+| 22
+| 23
+| 24
+| 25
+| 26
+| 27
+| 28
+| 29
+| 30
+| 31
+||
+|===
