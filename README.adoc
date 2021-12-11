@@ -16,37 +16,37 @@ e.g. `./inputs/year-2021/day-01/input.txt` and `./inputs/year-2021/day-01/exampl
 7+>h| 2021
 h|M h|Tu h|W h|Th h|F h|Sa h|Su
 ||| 1 +
-image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day01.kt,16]
-image:{img-sc}[link=scala/src/main/scala/year2021/Day01.scala,16]
+image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day01.kt,16,title="Kotlin Day 1"]
+image:{img-sc}[link=scala/src/main/scala/year2021/Day01.scala,16,title="Scala Day 1"]
 | 2 +
-image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day02.kt,16]
+image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day02.kt,16,title="Kotlin Day 2"]
 &nbsp;
 | 3 +
-image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day03.kt,16]
+image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day03.kt,16,title="Kotlin Day 3"]
 &nbsp;
 | 4 +
-image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day04.kt,16]
-image:{img-py}[link=python/year-2021/day-04.py,16]
+image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day04.kt,16,title="Kotlin Day 4"]
+image:{img-py}[link=python/year-2021/day-04.py,16,title="Python Day 4"]
 | 5 +
-image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day05.kt,16]
-image:{img-kt}[kotlin/src/main/kotlin/year2021/Day05Compact.kt,16,title="compact"]
-image:{img-py}[link=python/year-2021/day-05.py,16]
+image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day05.kt,16,title="Kotlin Day 5"]
+image:{img-kt}[kotlin/src/main/kotlin/year2021/Day05Compact.kt,16,title="Kotlin Day 5 : Compact"]
+image:{img-py}[link=python/year-2021/day-05.py,16,title="Python Day 5"]
 | 6 +
-image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day06.kt,16]
-image:{img-py}[link=python/year-2021/day-06.py,16]
+image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day06.kt,16,title="Kotlin Day 6"]
+image:{img-py}[link=python/year-2021/day-06.py,16,title="Python Day 6"]
 | 7 +
-image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day07.kt,16]
-image:{img-py}[link=python/year-2021/day-07.py,16]
+image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day07.kt,16,title="Kotlin Day 7"]
+image:{img-py}[link=python/year-2021/day-07.py,16,title="Python Day 7"]
 | 8 +
-image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day08.kt,16]
-image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day08Bitset.kt,width=16,title="bitset"]
-image:{img-py}[link=python/year-2021/day-08.py,16]
+image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day08.kt,16,title="Kotlin Day 8"]
+image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day08Bitset.kt,width=16,title="Kotlin Day 8 : bitset"]
+image:{img-py}[link=python/year-2021/day-08.py,16,title="Python Day 8"]
 | 9 +
-image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day09.kt,16]
+image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day09.kt,16,title="Kotlin Day 9"]
 &nbsp;
 | 10 +
-image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day10.kt,16]
-image:{img-py}[link=python/year-2021/day-10.py,16]
+image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day10.kt,16,title="Kotlin Day 10"]
+image:{img-py}[link=python/year-2021/day-10.py,16,title="Python Day 10"]
 | 11
 | 12
 | 13
