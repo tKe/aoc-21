@@ -19,6 +19,7 @@ class Year2021Test : FunSpec({
                 8 -> it.solutionsShouldReturn(part1 = 26, part2 = 61229)
                 9 -> it.solutionsShouldReturn(part1 = 15, part2 = 1134)
                 10 -> it.solutionsShouldReturn(part1 = 26397, part2 = 288957)
+                11 -> it.solutionsShouldReturn(part1 = 1656, part2 = Unit)
             }
         }
     }
