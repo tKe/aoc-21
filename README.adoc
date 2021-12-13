@@ -20,10 +20,8 @@ image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day01.kt,16,title="Kotlin Da
 image:{img-sc}[link=scala/src/main/scala/year2021/Day01.scala,16,title="Scala Day 1"]
 | 2 +
 image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day02.kt,16,title="Kotlin Day 2"]
-&nbsp;
 | 3 +
 image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day03.kt,16,title="Kotlin Day 3"]
-&nbsp;
 | 4 +
 image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day04.kt,16,title="Kotlin Day 4"]
 image:{img-py}[link=python/year-2021/day-04.py,16,title="Python Day 4"]
@@ -43,13 +41,13 @@ image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day08Bitset.kt,width=16,titl
 image:{img-py}[link=python/year-2021/day-08.py,16,title="Python Day 8"]
 | 9 +
 image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day09.kt,16,title="Kotlin Day 9"]
-&nbsp;
 | 10 +
 image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day10.kt,16,title="Kotlin Day 10"]
 image:{img-py}[link=python/year-2021/day-10.py,16,title="Python Day 10"]
 | 11 +
 image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day11.kt,16,title="Kotlin Day 11"]
-| 12
+| 12 +
+image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day12.kt,16,title="Kotlin Day 12"]
 | 13
 | 14
 | 15

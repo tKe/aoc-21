@@ -17,9 +17,9 @@ fun Puzzle.solutionsShouldReturn(
     context: Puzzle.() -> SolutionCtx = { testContext() },
 ) = with(context()) {
     expectedResults.forEach { (solution, expected) ->
-        withClue(solution) { puzzle[solution]() shouldBe expected }
+        withClue(solution to this.resolveInput("input.txt")) { puzzle[solution]() shouldBe expected }
     }
 }
 
-fun Puzzle.solutionsShouldReturn(part1: Any = Unit, part2: Any = Unit) =
-    solutionsShouldReturn("part1" to part1, "part2" to part2)
+fun Puzzle.solutionsShouldReturn(part1: Any = Unit, part2: Any = Unit, inputFile: String = "example.txt") =
+    solutionsShouldReturn("part1" to part1, "part2" to part2) { testContext("input.txt" to inputFile) }
