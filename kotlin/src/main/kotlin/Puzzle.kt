@@ -47,6 +47,7 @@ open class Puzzle(val year: Int, val day: Int, solutionDefinition: PuzzleCtx.() 
                             "unsolved"
                         }
                     }
+                    result = result.let { if (it is String && '\n' in it) "\n$it" else it }
                     println("\t$name (took ${duration}ms): $result")
                 }
             }
