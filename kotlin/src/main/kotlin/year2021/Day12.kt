@@ -18,35 +18,25 @@ object Day12 : Puzzle2021(12, {
 
     fun Map<String, List<String>>.traverse(
         history: List<String> = listOf("start"),
-        filterCreator: (List<String>) -> ((String) -> Boolean)
+        allowSecondVisit: Boolean = false
     ): Sequence<List<String>> =
         sequence {
             val currentCave = history.last()
-            val filter = filterCreator(history)
-            check(currentCave != "end")
-            getValue(currentCave).filter(filter).forEach {
+            val smallCavesVisited = history.filter { it[0].isLowerCase() }.toSet()
+            for (it in getValue(currentCave)) {
                 when (it) {
                     "end" -> yield(history + it)
-                    else -> yieldAll(traverse(history + it, filterCreator))
+                    in smallCavesVisited -> if (allowSecondVisit) yieldAll(traverse(history + it, false))
+                    else -> yieldAll(traverse(history + it, allowSecondVisit))
                 }
             }
         }
 
+
     part1 {
-        parseCaves()
-            .traverse { history ->
-                val smallCavesVisited = history.filter { it[0].isLowerCase() }.toSet()
-                ({ it !in smallCavesVisited })
-            }
-            .count()
+        parseCaves().traverse().count()
     }
     part2 {
-        parseCaves()
-            .traverse { history ->
-                val smallCaveVisits = history.filter { it[0].isLowerCase() }.groupingBy { it }.eachCount()
-                val canDoubleVisit = smallCaveVisits.maxOf { it.value } < 2
-                ({ canDoubleVisit || it !in smallCaveVisits })
-            }
-            .count()
+        parseCaves().traverse(allowSecondVisit = true).count()
     }
 })
