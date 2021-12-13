@@ -25,7 +25,17 @@ class Year2021Test : FunSpec({
                     it.solutionsShouldReturn(part1 = 19, part2 = 103, inputFile = "example-larger.txt")
                     it.solutionsShouldReturn(part1 = 226, part2 = 3509)
                 }
-                13 -> it.solutionsShouldReturn(part1 = 17)
+                13 -> it.solutionsShouldReturn(
+                    part1 = 17,
+                    part2 = """
+                        █████
+                        █░░░█
+                        █░░░█
+                        █░░░█
+                        █████
+                        ░░░░░
+                        ░░░░░
+                    """.trimIndent())
             }
         }
     }
