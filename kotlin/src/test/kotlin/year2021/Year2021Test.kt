@@ -36,6 +36,7 @@ class Year2021Test : FunSpec({
                         ░░░░░
                         ░░░░░
                     """.trimIndent())
+                14 -> it.solutionsShouldReturn(part1 = 1588, part2 = 2188189693529)
             }
         }
     }

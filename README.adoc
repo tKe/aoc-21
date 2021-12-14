@@ -50,7 +50,8 @@ image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day11.kt,16,title="Kotlin Da
 image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day12.kt,16,title="Kotlin Day 12"]
 | 13 +
 image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day13.kt,16,title="Kotlin Day 13"]
-| 14
+| 14 +
+image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day14.kt,16,title="Kotlin Day 14"]
 | 15
 | 16
 | 17
