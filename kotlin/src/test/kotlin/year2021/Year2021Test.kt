@@ -2,10 +2,12 @@ package year2021
 
 import Puzzle
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.core.test.AssertionMode
 import io.kotest.inspectors.forAll
 import solutionsShouldReturn
 
 class Year2021Test : FunSpec({
+    assertions = AssertionMode.Error
     Puzzle.all<Puzzle2021>().forAll {
         test(it::class.qualifiedName!!) {
             when (it.day) {
@@ -37,6 +39,7 @@ class Year2021Test : FunSpec({
                         ░░░░░
                     """.trimIndent())
                 14 -> it.solutionsShouldReturn(part1 = 1588, part2 = 2188189693529)
+                15 -> it.solutionsShouldReturn(part1 = 40, part2 = 315)
             }
         }
     }
