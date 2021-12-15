@@ -46,6 +46,7 @@ image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day10.kt,16,title="Kotlin Da
 image:{img-py}[link=python/year-2021/day-10.py,16,title="Python Day 10"]
 | 11 +
 image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day11.kt,16,title="Kotlin Day 11"]
+image:{img-py}[link=python/year-2021/day-11.py,16,title="Python Day 11"]
 | 12 +
 image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day12.kt,16,title="Kotlin Day 12"]
 | 13 +
