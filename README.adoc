@@ -54,6 +54,7 @@ image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day13.kt,16,title="Kotlin Da
 image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day14.kt,16,title="Kotlin Day 14"]
 | 15 +
 image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day15.kt,16,title="Kotlin Day 15"]
+image:{img-py}[link=python/year-2021/day-15.py,16,title="Python Day 15"]
 | 16
 | 17
 | 18
