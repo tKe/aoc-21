@@ -19,9 +19,7 @@ object Day16 : Puzzle2021(16, {
 })
 
 private interface Biterator : Iterator<Boolean> {
-    val remaining: Int
     fun next(bits: Int): Int
-    override fun hasNext() = remaining > 0
     override fun next() = next(1) == 1
 }
 
@@ -35,15 +33,16 @@ private fun Biterator.readVarint(): Long = sequence {
 
 private fun Biterator.limit(n: Int) = object : Biterator {
     var consumed = 0
-    override val remaining get() = n - consumed
 
     override fun next(bits: Int): Int {
-        require(bits <= remaining)
+        require(consumed + bits <= n)
         return this@limit.next(bits).also { consumed += bits }
     }
+
+    override fun hasNext() = consumed < n
 }
 
-private fun Biterator.readPackets() = sequence { while(remaining >= 11) yield(readPacket()) }
+private fun Biterator.readPackets() = sequence { while(hasNext()) yield(readPacket()) }
 private fun Biterator.readPacket() = BITSPacket.readFrom(this)
 
 private sealed interface BITSPacket {
@@ -136,8 +135,9 @@ private fun String.biterator() = object : Biterator {
     val bitstring = this@biterator.asSequence().joinToString("") {
         it.digitToInt(16).toString(2).padStart(4, '0')
     }
-    override val remaining get() = bitstring.length - ofs
     override fun next(bits: Int) =
         bitstring.substring(ofs, ofs + bits).toInt(2)
             .also { ofs += bits }
+
+    override fun hasNext() = ofs < bitstring.length
 }
