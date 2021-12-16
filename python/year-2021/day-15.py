@@ -13,32 +13,34 @@ def main():
 def dijkstra(grid, start=None, end=None):
     rows, cols = (len(grid), len(grid[0]))
     last_row, last_col = (rows - 1, cols - 1)
+    cells = rows * cols
 
-    def neighbours(pt):
-        x, y = pt
-        return (n for n in (
-            (x - 1, y) if x > 0 else None,
-            (x + 1, y) if x < last_col else None,
-            (x, y - 1) if y > 0 else None,
-            (x, y + 1) if y < last_row else None
-        ) if n)
+    def neighbours(idx):
+        x = idx % cols
+        return tuple(i for i in (
+            idx - 1 if x > 0 else -1,
+            idx + 1 if x < last_col else -1,
+            idx - cols,
+            idx + cols
+        ) if 0 <= i < cells)
 
-    start = start or (0, 0)
-    end = end or (last_col, last_row)
+    start_idx = start[1] * cols + start[0] if start else 0
+    end_idx = end[1] * cols + end[0] if end else cells - 1
 
-    dists = [[math.inf for _ in r] for r in grid]
-    dists[start[1]][start[1]] = 0
-    queue = [(0, start)]
+    costs = [v for r in grid for v in r]
+    dists = [math.inf for r in grid for _ in r]
+    dists[start_idx] = 0
+    queue = [(0, start_idx)]
 
     while len(queue):
-        (cur_dist, cur_pt) = heappop(queue)
-        if cur_pt == end:
+        (cur_dist, cur_idx) = heappop(queue)
+        if cur_idx == end_idx:
             return cur_dist
-        for n_pt in neighbours(cur_pt):
-            n_dist = cur_dist + grid[n_pt[1]][n_pt[0]]
-            if n_dist < dists[n_pt[1]][n_pt[0]]:
-                dists[n_pt[1]][n_pt[0]] = n_dist
-                heappush(queue, (n_dist, n_pt))
+        for n_idx in neighbours(cur_idx):
+            n_dist = cur_dist + costs[n_idx]
+            if n_dist < dists[n_idx]:
+                dists[n_idx] = n_dist
+                heappush(queue, (n_dist, n_idx))
 
 
 def scale_grid(grid, scale):
