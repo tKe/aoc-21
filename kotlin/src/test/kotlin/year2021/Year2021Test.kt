@@ -40,6 +40,10 @@ class Year2021Test : FunSpec({
                     """.trimIndent())
                 14 -> it.solutionsShouldReturn(part1 = 1588, part2 = 2188189693529)
                 15 -> it.solutionsShouldReturn(part1 = 40, part2 = 315)
+                16 -> {
+                    it.solutionsShouldReturn(part1 = listOf(16, 12, 23, 31), inputFile = "example-part1.txt")
+                    it.solutionsShouldReturn(part2 = listOf(3, 54, 7, 9, 1, 0, 0, 1), inputFile = "example-part2.txt")
+                }
             }
         }
     }

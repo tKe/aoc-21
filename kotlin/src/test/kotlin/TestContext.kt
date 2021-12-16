@@ -12,14 +12,17 @@ fun Puzzle.testContext(vararg inputMappings: Pair<String, String> = arrayOf("inp
         }
     )
 
+private object Ignored
+
 fun Puzzle.solutionsShouldReturn(
     vararg expectedResults: Pair<String, Any>,
     context: Puzzle.() -> SolutionCtx = { testContext() },
 ) = with(context()) {
-    expectedResults.forEach { (solution, expected) ->
+    expectedResults.filter { (_, expected) -> expected != Ignored }.forEach { (solution, expected) ->
+        if (expected != Ignored)
         withClue(solution to this.resolveInput("input.txt")) { puzzle[solution]() shouldBe expected }
     }
 }
 
-fun Puzzle.solutionsShouldReturn(part1: Any = Unit, part2: Any = Unit, inputFile: String = "example.txt") =
+fun Puzzle.solutionsShouldReturn(part1: Any = Ignored, part2: Any = Ignored, inputFile: String = "example.txt") =
     solutionsShouldReturn("part1" to part1, "part2" to part2) { testContext("input.txt" to inputFile) }
