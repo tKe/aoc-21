@@ -35,10 +35,14 @@ def dijkstra(grid, start=None, end=None):
         if cur_idx == end_idx:
             return cur_dist
         cur_x = cur_idx % cols
-        if cur_x > 0: assess(cur_idx - 1)
-        if cur_x < last_col: assess(cur_idx + 1)
-        if cur_idx >= cols: assess(cur_idx - cols)
-        if cur_idx < last_row_idx: assess(cur_idx + cols)
+        if cur_x > 0:
+            assess(cur_idx - 1)
+        if cur_x < last_col:
+            assess(cur_idx + 1)
+        if cur_idx >= cols:
+            assess(cur_idx - cols)
+        if cur_idx < last_row_idx:
+            assess(cur_idx + cols)
 
 
 def scale_grid(grid, scale):
