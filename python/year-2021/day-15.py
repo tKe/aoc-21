@@ -13,44 +13,42 @@ def main():
 def dijkstra(grid, start=None, end=None):
     rows, cols = (len(grid), len(grid[0]))
     last_row, last_col = (rows - 1, cols - 1)
-    cells = rows * cols
-
-    def neighbours(idx):
-        x = idx % cols
-        return tuple(i for i in (
-            idx - 1 if x > 0 else -1,
-            idx + 1 if x < last_col else -1,
-            idx - cols,
-            idx + cols
-        ) if 0 <= i < cells)
+    last_row_idx = last_row * cols
+    last_idx = last_row * cols + last_col
 
     start_idx = start[1] * cols + start[0] if start else 0
-    end_idx = end[1] * cols + end[0] if end else cells - 1
+    end_idx = end[1] * cols + end[0] if end else last_idx
 
-    costs = [v for r in grid for v in r]
-    dists = [math.inf for r in grid for _ in r]
+    costs = tuple(cost for row in grid for cost in row)
+    dists = [math.inf] * cols * rows
     dists[start_idx] = 0
     queue = [(0, start_idx)]
 
-    while len(queue):
+    def assess(idx):
+        dist = cur_dist + costs[idx]
+        if dist < dists[idx]:
+            dists[idx] = dist
+            heappush(queue, (dist, idx))
+
+    while queue:
         (cur_dist, cur_idx) = heappop(queue)
         if cur_idx == end_idx:
             return cur_dist
-        for n_idx in neighbours(cur_idx):
-            n_dist = cur_dist + costs[n_idx]
-            if n_dist < dists[n_idx]:
-                dists[n_idx] = n_dist
-                heappush(queue, (n_dist, n_idx))
+        cur_x = cur_idx % cols
+        if cur_x > 0: assess(cur_idx - 1)
+        if cur_x < last_col: assess(cur_idx + 1)
+        if cur_idx >= cols: assess(cur_idx - cols)
+        if cur_idx < last_row_idx: assess(cur_idx + cols)
 
 
 def scale_grid(grid, scale):
     rows = len(grid)
     cols = len(grid[0])
-    return [
-        [(grid[y % rows][x % rows] + x // cols + y // rows - 1) % 9 + 1
-         for x in range(cols * scale)]
+    return tuple(
+        tuple((grid[y % rows][x % cols] + x // cols + y // rows - 1) % 9 + 1
+              for x in range(cols * scale))
         for y in range(rows * scale)
-    ]
+    )
 
 
 if __name__ == '__main__':
