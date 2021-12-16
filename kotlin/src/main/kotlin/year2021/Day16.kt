@@ -13,7 +13,7 @@ object Day16 : Puzzle2021(16, {
 
     part2 {
         input.map { line ->
-            BITSPacket.readFrom(line.biterator()).value
+            BITSPacket.readFrom(line.biterator()).also { println(it.render()) }.value
         }
     }
 })
@@ -54,12 +54,12 @@ private sealed interface BITSPacket {
 
     data class Literal(override val version: Int, override val type: Int, override val value: Long) : BITSPacket
     sealed class Operator(override val version: Int, override val type: Int, val packets: List<BITSPacket>) : BITSPacket {
-        abstract class ReducingOperator(version: Int, type: Int, packets: List<BITSPacket>, reducer: (Long, Long) -> Long) :
+        sealed class ReducingOperator(version: Int, type: Int, packets: List<BITSPacket>, reducer: (Long, Long) -> Long) :
             Operator(version, type, packets) {
             override val value = packets.map { it.value }.reduce(reducer)
         }
 
-        abstract class ComparisonOperator(
+        sealed class ComparisonOperator(
             version: Int,
             type: Int,
             packets: List<BITSPacket>,
@@ -108,6 +108,19 @@ private sealed interface BITSPacket {
             }
         }
     }
+}
+
+private fun BITSPacket.Operator.render(sep: String = ", ", prefix: String = "") =
+    packets.joinToString(sep, "$prefix(", postfix = ")", transform = BITSPacket::render)
+private fun BITSPacket.render(): String = when (this@render) {
+    is BITSPacket.Literal -> value.toString()
+    is BITSPacket.Operator.Sum -> render(sep = " + ")
+    is BITSPacket.Operator.Product -> render(sep = " * ")
+    is BITSPacket.Operator.Min -> render(prefix = "min")
+    is BITSPacket.Operator.Max -> render(prefix = "max")
+    is BITSPacket.Operator.GreaterThan -> render(sep = " > ")
+    is BITSPacket.Operator.LessThan -> render(sep = " < ")
+    is BITSPacket.Operator.EqualTo -> render(sep = " = ")
 }
 
 private fun BITSPacket.walk(): Sequence<BITSPacket> = sequence {
