@@ -119,14 +119,12 @@ private fun BITSPacket.walk(): Sequence<BITSPacket> = sequence {
 }
 
 private fun String.biterator() = object : Biterator {
-    var bitstring = this@biterator.asSequence().joinToString("") {
+    var ofs = 0
+    val bitstring = this@biterator.asSequence().joinToString("") {
         it.digitToInt(16).toString(2).padStart(4, '0')
     }
-
-    override val remaining get() = bitstring.length
-
-    override fun next(bits: Int) = (0 until bits).let { range ->
-        bitstring.substring(range).toInt(2)
-            .also { bitstring = bitstring.removeRange(range) }
-    }
+    override val remaining get() = bitstring.length - ofs
+    override fun next(bits: Int) =
+        bitstring.substring(ofs, ofs + bits).toInt(2)
+            .also { ofs += bits }
 }
