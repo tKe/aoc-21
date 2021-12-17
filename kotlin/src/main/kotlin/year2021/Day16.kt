@@ -42,56 +42,40 @@ private fun Biterator.limit(n: Int) = object : Biterator {
     override fun hasNext() = consumed < n
 }
 
-private fun Biterator.readPackets() = sequence { while(hasNext()) yield(readPacket()) }
+private fun Biterator.readPackets() = sequence { while (hasNext()) yield(readPacket()) }
 private fun Biterator.readPacket() = BITSPacket.readFrom(this)
 
 private sealed interface BITSPacket {
     val version: Int
-    val type: Int
-
     val value: Long
 
-    data class Literal(override val version: Int, override val type: Int, override val value: Long) : BITSPacket
-    sealed class Operator(override val version: Int, override val type: Int, val packets: List<BITSPacket>) : BITSPacket {
-        sealed class ReducingOperator(version: Int, type: Int, packets: List<BITSPacket>, reducer: (Long, Long) -> Long) :
-            Operator(version, type, packets) {
+    data class Literal(override val version: Int, override val value: Long) : BITSPacket
+    sealed class Operator(override val version: Int, val packets: List<BITSPacket>) : BITSPacket {
+        sealed class ReducingOperator(version: Int, packets: List<BITSPacket>, reducer: (Long, Long) -> Long) :
+            Operator(version, packets) {
             override val value = packets.map { it.value }.reduce(reducer)
         }
 
-        sealed class ComparisonOperator(
-            version: Int,
-            type: Int,
-            packets: List<BITSPacket>,
-            operator: (Long, Long) -> Boolean
-        ) : Operator(version, type, packets) {
+        sealed class BinaryOperator(version: Int, packets: List<BITSPacket>, operator: (Long, Long) -> Boolean) :
+            Operator(version, packets) {
             override val value = packets.let { (a, b) -> if (operator(a.value, b.value)) 1L else 0L }
         }
 
-        class Sum(version: Int, type: Int, packets: List<BITSPacket>) :
-            ReducingOperator(version, type, packets, Long::plus)
-
-        class Product(version: Int, type: Int, packets: List<BITSPacket>) :
-            ReducingOperator(version, type, packets, Long::times)
-
-        class Min(version: Int, type: Int, packets: List<BITSPacket>) : ReducingOperator(version, type, packets, ::minOf)
-        class Max(version: Int, type: Int, packets: List<BITSPacket>) : ReducingOperator(version, type, packets, ::maxOf)
-        class GreaterThan(version: Int, type: Int, packets: List<BITSPacket>) :
-            ComparisonOperator(version, type, packets, { a, b -> a > b })
-
-        class LessThan(version: Int, type: Int, packets: List<BITSPacket>) :
-            ComparisonOperator(version, type, packets, { a, b -> a < b })
-
-        class EqualTo(version: Int, type: Int, packets: List<BITSPacket>) :
-            ComparisonOperator(version, type, packets, { a, b -> a == b })
-
+        class Sum(version: Int, packets: List<BITSPacket>) : ReducingOperator(version, packets, Long::plus)
+        class Product(version: Int, packets: List<BITSPacket>) : ReducingOperator(version, packets, Long::times)
+        class Min(version: Int, packets: List<BITSPacket>) : ReducingOperator(version, packets, ::minOf)
+        class Max(version: Int, packets: List<BITSPacket>) : ReducingOperator(version, packets, ::maxOf)
+        class GreaterThan(version: Int, packets: List<BITSPacket>) : BinaryOperator(version, packets, { a, b -> a > b })
+        class LessThan(version: Int, packets: List<BITSPacket>) : BinaryOperator(version, packets, { a, b -> a < b })
+        class EqualTo(version: Int, packets: List<BITSPacket>) : BinaryOperator(version, packets, { a, b -> a == b })
     }
 
     companion object {
         fun readFrom(biterator: Biterator): BITSPacket = with(biterator) {
             val version = next(3)
             when (val type = next(3)) {
-                4 -> Literal(version, type, readVarint())
-                else -> when(type) {
+                4 -> Literal(version, readVarint())
+                else -> when (type) {
                     0 -> Operator::Sum
                     1 -> Operator::Product
                     2 -> Operator::Min
@@ -100,10 +84,12 @@ private sealed interface BITSPacket {
                     6 -> Operator::LessThan
                     7 -> Operator::EqualTo
                     else -> error("unknown operator $type")
-                }(version, type, when (next()) {
-                    true -> readPackets().take(next(11)).toList()
-                    false -> limit(next(15)).readPackets().toList()
-                })
+                }.invoke(
+                    version, when (next()) {
+                        true -> readPackets().take(next(11)).toList()
+                        false -> limit(next(15)).readPackets().toList()
+                    }
+                )
             }
         }
     }
@@ -111,6 +97,7 @@ private sealed interface BITSPacket {
 
 private fun BITSPacket.Operator.render(sep: String = ", ", prefix: String = "") =
     packets.joinToString(sep, "$prefix(", postfix = ")", transform = BITSPacket::render)
+
 private fun BITSPacket.render(): String = when (this@render) {
     is BITSPacket.Literal -> value.toString()
     is BITSPacket.Operator.Sum -> render(sep = " + ")
@@ -130,14 +117,44 @@ private fun BITSPacket.walk(): Sequence<BITSPacket> = sequence {
     }
 }
 
-private fun String.biterator() = object : Biterator {
-    var ofs = 0
-    val bitstring = this@biterator.asSequence().joinToString("") {
-        it.digitToInt(16).toString(2).padStart(4, '0')
-    }
-    override fun next(bits: Int) =
-        bitstring.substring(ofs, ofs + bits).toInt(2)
-            .also { ofs += bits }
+private fun String.decodeHex() = ByteArray(length / 2) {
+    substring(it * 2, (it + 1) * 2).toInt(16).toByte()
+}
 
-    override fun hasNext() = ofs < bitstring.length
+private fun String.biterator() = decodeHex().biterator()
+
+private fun ByteArray.biterator() = object : Biterator {
+    val bytes = this@biterator.iterator()
+    var current: Int = 0
+    var availableBits = 0
+
+    private fun prepareNext() {
+        current = bytes.nextByte().toInt() and 0xFF
+        availableBits = 8
+    }
+
+    override fun next(bits: Int): Int {
+        if (availableBits == 0) prepareNext()
+        return when {
+            bits == 8 && availableBits == 8 -> current.also { availableBits = 0 }
+            bits <= availableBits -> {
+                availableBits -= bits
+                current shr availableBits and masks[bits]
+            }
+            bits <= 31 -> {
+                val rem = bits - availableBits
+                var acc = next(availableBits)
+                repeat(rem / 8) { acc = acc shl 8 or next(8) }
+                when (val last = (rem % 8)) {
+                    0 -> acc
+                    else -> acc shl last or next(last)
+                }
+            }
+            else -> error("reading more than 31 bits at a time is not supported")
+        }
+    }
+
+    private val masks = intArrayOf(0b0, 0b1, 0b11, 0b111, 0b1111, 0b1_1111, 0b11_1111, 0b111_1111)
+
+    override fun hasNext() = bytes.hasNext() && availableBits > 0
 }
