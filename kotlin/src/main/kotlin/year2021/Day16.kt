@@ -7,6 +7,7 @@ fun main() = Puzzle.main(Day16)
 object Day16 : Puzzle2021(16, {
     part1 {
         input.map { line ->
+            println(line)
             BITSPacket.readFrom(line.biterator()).walk().sumOf { it.version }
         }
     }
@@ -53,7 +54,7 @@ private sealed interface BITSPacket {
     sealed class Operator(override val version: Int, val packets: List<BITSPacket>) : BITSPacket {
         sealed class ReducingOperator(version: Int, packets: List<BITSPacket>, reducer: (Long, Long) -> Long) :
             Operator(version, packets) {
-            override val value = packets.map { it.value }.reduce(reducer)
+            override val value = packets.takeUnless { it.isEmpty() }?.map { it.value }?.reduce(reducer) ?: error("wat? $this")
         }
 
         sealed class BinaryOperator(version: Int, packets: List<BITSPacket>, operator: (Long, Long) -> Boolean) :
@@ -156,5 +157,5 @@ private fun ByteArray.biterator() = object : Biterator {
 
     private val masks = intArrayOf(0b0, 0b1, 0b11, 0b111, 0b1111, 0b1_1111, 0b11_1111, 0b111_1111)
 
-    override fun hasNext() = bytes.hasNext() && availableBits > 0
+    override fun hasNext() = bytes.hasNext() || availableBits > 0
 }
