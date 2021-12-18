@@ -1,6 +1,7 @@
 package year2021
 
 import Puzzle
+import io.kotest.assertions.fail
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.core.test.AssertionMode
 import io.kotest.inspectors.forAll
@@ -42,8 +43,13 @@ class Year2021Test : FunSpec({
                 15 -> it.solutionsShouldReturn(part1 = 40, part2 = 315)
                 16 -> {
                     it.solutionsShouldReturn(part1 = listOf(16, 12, 23, 31), inputFile = "example-part1.txt")
-                    it.solutionsShouldReturn(part2 = listOf(3, 54, 7, 9, 1, 0, 0, 1), inputFile = "example-part2.txt")
+                    it.solutionsShouldReturn(
+                        part2 = listOf(3, 54, 7, 9, 1, 0, 0, 1),
+                        inputFile = "example-part2.txt"
+                    )
                 }
+                17 -> it.solutionsShouldReturn(part1 = 45, part2 = 112)
+                else -> test("no tests") { fail("no tests for day ${it.day}") }
             }
         }
     }

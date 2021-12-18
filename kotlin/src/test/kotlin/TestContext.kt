@@ -19,7 +19,6 @@ fun Puzzle.solutionsShouldReturn(
     context: Puzzle.() -> SolutionCtx = { testContext() },
 ) = with(context()) {
     expectedResults.filter { (_, expected) -> expected != Ignored }.forEach { (solution, expected) ->
-        if (expected != Ignored)
         withClue(solution to this.resolveInput("input.txt")) { puzzle[solution]() shouldBe expected }
     }
 }

@@ -6,7 +6,7 @@ interface InputCtx {
     fun <R> SolutionCtx.withInput(name: String = "input.txt", block: (Sequence<String>) -> R) =
         util.withInput(resolveInput(name), block)
 
-    fun SolutionCtx.getInput(name: String = "input.txt") = withInput { it.toList() }
+    fun SolutionCtx.getInput(name: String = "input.txt") = withInput(name) { it.toList() }
 
     companion object Default : InputCtx {
         override fun SolutionCtx.resolveInput(name: String) =
