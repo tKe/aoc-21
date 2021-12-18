@@ -23,7 +23,7 @@ object Day17 : Puzzle2021(17, {
 
     fun launch(vx: Int, vy: Int, x: Int = 0, y: Int = 0) = generateSequence(ProbeState(x, y, vx, vy), ProbeState::move)
 
-    infix fun Sequence<ProbeState>.at(target: Target) = takeWhile { !(it.x > target.x.last || it.y < target.y.first) }.toList()
+    infix fun Sequence<ProbeState>.at(target: Target) = takeWhile { it.x <= target.x.last && it.y >= target.y.first }.toList()
 
     infix fun List<ProbeState>.hit(target: Target) = any { it.x in target.x && it.y in target.y }
 
