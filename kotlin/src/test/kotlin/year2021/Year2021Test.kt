@@ -4,7 +4,10 @@ import Puzzle
 import io.kotest.assertions.fail
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.core.test.AssertionMode
+import io.kotest.data.forAll
+import io.kotest.data.row
 import io.kotest.inspectors.forAll
+import io.kotest.matchers.shouldBe
 import solutionsShouldReturn
 
 class Year2021Test : FunSpec({
@@ -49,8 +52,57 @@ class Year2021Test : FunSpec({
                     )
                 }
                 17 -> it.solutionsShouldReturn(part1 = 45, part2 = 112)
-                else -> test("no tests") { fail("no tests for day ${it.day}") }
+                18 -> it.solutionsShouldReturn(part1 = 4140, part2 = 3993)
+                else -> fail("no tests for day ${it.day}")
             }
+        }
+    }
+
+    context("additional Day18 test cases") {
+        forAll(
+            row(
+                """
+                    [1,1]
+                    [2,2]
+                    [3,3]
+                    [4,4]
+                """.trimIndent(), "[[[[1,1],[2,2]],[3,3]],[4,4]]"
+            ),
+            row(
+                """
+                    [1,1]
+                    [2,2]
+                    [3,3]
+                    [4,4]
+                    [5,5]
+                """.trimIndent(), "[[[[3,0],[5,3]],[4,4]],[5,5]]"
+            ),
+            row(
+                """
+                    [1,1]
+                    [2,2]
+                    [3,3]
+                    [4,4]
+                    [5,5]
+                    [6,6]
+                """.trimIndent(), "[[[[5,0],[7,4]],[5,5]],[6,6]]"
+            ),
+            row(
+                """
+                    [[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]]
+                    [7,[[[3,7],[4,3]],[[6,3],[8,8]]]]
+                    [[2,[[0,8],[3,4]]],[[[6,7],1],[7,[1,6]]]]
+                    [[[[2,4],7],[6,[0,5]]],[[[6,8],[2,8]],[[2,1],[4,5]]]]
+                    [7,[5,[[3,8],[1,4]]]]
+                    [[2,[2,2]],[8,[8,1]]]
+                    [2,9]
+                    [1,[[[9,3],9],[[9,0],[0,7]]]]
+                    [[[5,[7,4]],7],1]
+                    [[[[4,2],2],6],[8,7]]
+                """.trimIndent(), "[[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]"
+            )
+        ) { input, result ->
+            Day18.sumAll(input.lines()).toString() shouldBe result
         }
     }
 })

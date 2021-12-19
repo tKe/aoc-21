@@ -62,7 +62,8 @@ image:{img-py}[link=python/year-2021/day-15.py,16,title="Python Day 15"]
 image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day16.kt,16,title="Kotlin Day 16"]
 | 17 +
 image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day17.kt,16,title="Kotlin Day 17"]
-| 18
+| 18 +
+image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day18.kt,16,title="Kotlin Day 18"]
 | 19
 | 20
 | 21
