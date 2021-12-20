@@ -66,7 +66,8 @@ image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day17.kt,16,title="Kotlin Da
 image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day18.kt,16,title="Kotlin Day 18"]
 | 19 +
 image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day19.kt,16,title="Kotlin Day 19"]
-| 20
+| 20 +
+image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day20.kt,16,title="Kotlin Day 20"]
 | 21
 | 22
 | 23
