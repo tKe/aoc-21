@@ -1,3 +1,4 @@
+import kotlin.reflect.KProperty
 import kotlin.system.measureTimeMillis
 
 interface InputCtx {
@@ -20,9 +21,15 @@ class SolutionCtx(val puzzle: Puzzle, private val inputCtx: InputCtx = InputCtx.
 
 typealias Solution = SolutionCtx.() -> Any
 
-open class Puzzle(val year: Int, val day: Int, solutionDefinition: PuzzleCtx.() -> Unit) {
-    val solutions = buildMap {
+
+open class Puzzle(val year: Int, val day: Int, solutionDefinition: PuzzleCtx.() -> Unit = {}) {
+    private val solutions = buildMap {
         PuzzleCtx(this::put).solutionDefinition()
+    }.toMutableMap()
+
+    protected fun solution(solution: Solution) = SolutionDelegateProvider(solutions, solution)
+    protected class SolutionDelegateProvider<T>(private val map: MutableMap<String, T>, private val value: T) {
+        operator fun provideDelegate(receiver: Any?, property: KProperty<*>): Map<String, T> = map.also { it[property.name] = value }
     }
 
     fun interface PuzzleCtx {
@@ -33,6 +40,7 @@ open class Puzzle(val year: Int, val day: Int, solutionDefinition: PuzzleCtx.() 
     }
 
     operator fun get(name: String): Solution = (solutions[name] ?: error("no solution defined for [$name]"))
+
 
     companion object {
         fun main(puzzle: Puzzle) = with(puzzle) {

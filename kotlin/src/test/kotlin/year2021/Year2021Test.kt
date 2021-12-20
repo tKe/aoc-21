@@ -53,6 +53,7 @@ class Year2021Test : FunSpec({
                 }
                 17 -> it.solutionsShouldReturn(part1 = 45, part2 = 112)
                 18 -> it.solutionsShouldReturn(part1 = 4140, part2 = 3993)
+                19 -> it.solutionsShouldReturn(part1 = 79, part2 = 3621)
                 else -> fail("no tests for day ${it.day}")
             }
         }
