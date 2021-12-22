@@ -12,6 +12,7 @@ import solutionsShouldReturn
 
 class Year2021Test : FunSpec({
     assertions = AssertionMode.Error
+    assertSoftly = true
     Puzzle.all<Puzzle2021>().forAll {
         test(it::class.qualifiedName!!) {
             when (it.day) {
@@ -56,6 +57,10 @@ class Year2021Test : FunSpec({
                 19 -> it.solutionsShouldReturn(part1 = 79, part2 = 3621)
                 20 -> it.solutionsShouldReturn(part1 = 35, 3351)
                 21 -> it.solutionsShouldReturn(part1 = 739785, part2 = 444356092776315L)
+                22 -> {
+                    it.solutionsShouldReturn(part1 = 590784, inputFile = "example-part1.txt")
+                    it.solutionsShouldReturn(part2 = 2758514936282235, inputFile = "example-part2.txt")
+                }
                 else -> fail("no tests for day ${it.day}")
             }
         }
