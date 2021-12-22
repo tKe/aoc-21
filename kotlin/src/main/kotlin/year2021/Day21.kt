@@ -6,84 +6,54 @@ import SolutionCtx
 fun main() = Puzzle.main(Day21)
 
 object Day21 : Puzzle2021(21) {
-    val part1 by solution {
-        val die = deterministicD100.counting()
-        val (playerOne, playerTwo) = readPlayers()
-        val loser = generateSequence(GameState(playerOne, playerTwo, winningScore = 1000)) {
-            it.move(die.roll(3))
-        }.firstNotNullOf { it.loser }
 
-        loser.score * die.rollCount
+    val part1 by solution {
+        val die = generateSequence { 1..100 }.flatten().iterator()::next
+        tailrec fun GameState.play(winningScore: Int = 1000): GameState {
+            val played = move(die.roll(3))
+            return if (played.prev.score >= winningScore) played
+            else played.play(winningScore)
+        }
+        readGame().play(1000).run { next.score * turn * 3 }
     }
 
     val part2 by solution {
-        val (playerOne, playerTwo) = readPlayers()
-
-        val initialGame = GameState(playerOne, playerTwo, winningScore = 21)
-        val wins = generateSequence(mapOf(initialGame to 1L) to emptyMap<Int, Long>()) { (games, wins) ->
-            val nextGames = mutableMapOf<GameState, Long>()
-            val nextWins = wins.toMutableMap()
-            games.forEach { (game, gameCount) ->
-                diracRollToUniverse.forEach { (roll, rollCount) ->
-                    val nextGame = game.move(roll)
-                    val winner = nextGame.winner
-                    if (winner == null) {
-                        nextGames.compute(nextGame) { _, prevCount -> (prevCount ?: 0L) + rollCount * gameCount }
-                    } else {
-                        nextWins.compute(winner.number) { _, prevWins -> (prevWins ?: 0L) + rollCount * gameCount }
+        val wins = longArrayOf(0, 0)
+        generateSequence(mapOf(readGame() to MutableLong(1))) { games ->
+            buildMap {
+                for ((game, gameCount) in games) {
+                    for ((roll, rollCount) in diracRollCounts) {
+                        val play = game.move(roll)
+                        when {
+                            play.prev.score < 21 -> add(play, gameCount * rollCount)
+                            else -> wins[play.turn % 2] += gameCount * rollCount
+                        }
                     }
                 }
             }
-            nextGames to nextWins
-        }.firstNotNullOf { (games, wins) -> wins.takeIf { games.isEmpty() } }
+        }.first { it.isEmpty() }
 
-        wins.values.maxOf { it }
+        wins.maxOrNull() ?: 0
     }
 
-    private fun SolutionCtx.readPlayers() = input.map {
-        val (player, position) = it.split(" ").mapNotNull(String::toIntOrNull)
-        Player(player, position)
-    }
+    private fun SolutionCtx.readGame() = input
+        .map { Player(it.split(" ").mapNotNull(String::toIntOrNull).last() - 1) }
+        .let { (a, b) -> GameState(a, b) }
 
-    private val diracRollToUniverse = (1..3).flatMap { a -> (1..3).flatMap { b -> (1..3).map { a + b + it } } }
-        .groupingBy { it }.eachCount().mapValues { it.value.toLong() }
+    private val diracRollCounts = (1..3).run { flatMap { a -> flatMap { b -> map { a + b + it } } } }
+        .groupingBy { it }.fold(0L) { acc, _ -> acc + 1 }.asSequence()
 
-    private data class Player(val number: Int, val position: Int, val score: Int = 0) {
-        fun move(roll: Int) = ((position + roll - 1) % 10 + 1).let { position ->
-            copy(position = position, score = score + position)
-        }
-    }
+    private data class Player(val position: Int, val score: Int = 0)
 
-    private data class GameState(val playerOne: Player, val playerTwo: Player, val turn: Int = 0, val winningScore: Int) {
-        fun move(roll: Int) = when (turn % 2) {
-            0 -> copy(playerOne = playerOne.move(roll), turn = turn + 1)
-            else -> copy(playerTwo = playerTwo.move(roll), turn = turn + 1)
-        }
+    private fun Player.move(roll: Int) = ((position + roll) % 10).let { Player(position = it, score = score + it + 1) }
 
-        val winner by lazy {
-            playerOne.takeIf { it.score >= winningScore } ?: playerTwo.takeIf { it.score >= winningScore }
-        }
-        val loser by lazy {
-            when (winner) {
-                playerOne -> playerTwo
-                playerTwo -> playerOne
-                else -> null
-            }
-        }
-    }
+    private data class GameState(val next: Player, val prev: Player, val turn: Int = 0)
 
-    fun interface Die : () -> Int
-    interface CountingDie : Die {
-        val rollCount: Int
-    }
+    private fun GameState.move(roll: Int) = GameState(next = prev, prev = next.move(roll), turn = turn + 1)
 
-    private fun Die.roll(count: Int = 1) = generateSequence { this() }.take(count).sum()
-
-    private fun Die.counting() = object : CountingDie {
-        override var rollCount: Int = 0
-        override fun invoke() = this@counting().also { rollCount++ }
-    }
-
-    private val deterministicD100: Die
-        get() = sequence { while (true) yieldAll(1..100) }.iterator().let { Die { it.next() } }
+    private fun (() -> Int).roll(count: Int = 1) = generateSequence { this() }.take(count).sum()
+    private data class MutableLong(var value: Long = 0)
+    private operator fun MutableLong.times(other: Long) = value * other
+    private fun <T> MutableMap<T, MutableLong>.add(key: T, count: Long) { getOrPut(key, ::MutableLong).value += count }
 }
+
