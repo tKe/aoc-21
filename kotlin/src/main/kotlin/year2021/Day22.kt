@@ -17,9 +17,10 @@ object Day22 : Puzzle2021(22) {
         parseRebootSteps().countFinalOn()
     }
 
-    private fun List<RebootStep>.countFinalOn() = mapWithSubsequent { step, subsequent ->
-        step to subsequent.filterTo(step.cuboid).map(RebootStep::cuboid)
-    }.filter { (step) -> step.state }.sumOf { (step, overlaps) -> step.cuboid.sizeExcluding(overlaps) }
+    private fun List<RebootStep>.countFinalOn(cache: MutableMap<Any, Long> = mutableMapOf()) =
+        mapWithSubsequent { step, subsequent ->
+            step to subsequent.filterTo(step.cuboid).map(RebootStep::cuboid)
+        }.filter { (step) -> step.state }.sumOf { (step, overlaps) -> step.cuboid.sizeExcluding(overlaps, cache) }
 
     private data class Cuboid(val xs: IntRange, val ys: IntRange, val zs: IntRange = 0..0) {
         constructor(cubicRange: IntRange) : this(cubicRange, cubicRange, cubicRange)
@@ -41,8 +42,12 @@ object Day22 : Puzzle2021(22) {
     private fun List<RebootStep>.filterTo(cuboid: Cuboid) =
         map { it.copy(cuboid = cuboid.intersect(it.cuboid)) }.filterNot { it.cuboid.isEmpty() }
 
-    private fun Cuboid.sizeExcluding(overlaps: List<Cuboid>): Long =
-        size - overlaps.mapWithSubsequent { overlap, subsequent -> intersect(overlap).sizeExcluding(subsequent) }.sum()
+    private fun Cuboid.sizeExcluding(overlaps: List<Cuboid>, cache: MutableMap<Any, Long>): Long =
+        cache.getOrPut(this to overlaps) {
+            size - overlaps.mapWithSubsequent { overlap, subsequent ->
+                intersect(overlap).sizeExcluding(subsequent, cache)
+            }.sum()
+        }
 
     private fun <T, R> List<T>.mapWithSubsequent(transform: (element: T, subsequent: List<T>) -> R) =
         mapIndexed { index: Int, element: T -> transform(element, subList(index + 1, size)) }
