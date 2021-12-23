@@ -27,30 +27,24 @@ object Day22CoordCompression : Puzzle2021(22) {
         private val xAxis = CompressedAxis(xValues)
         private val yAxis = CompressedAxis(yValues)
         private val zAxis = CompressedAxis(zValues)
-        private val height = yAxis.sizes.size
-        private val depth = zAxis.sizes.size
-        private val data = BitSet(xAxis.sizes.size * yAxis.sizes.size * zAxis.sizes.size)
+        private val data = Array(xAxis.size) { Array(yAxis.size) { BitSet(zAxis.size) } }
 
-        private fun idx(x: Int, y: Int, z: Int) = depth * height * x + y * depth + z
-        operator fun get(x: Int, y: Int, z: Int) = data[idx(xAxis[x], yAxis[y], zAxis[z])]
+        operator fun get(x: Int, y: Int, z: Int) = data[xAxis[x]][yAxis[y]][zAxis[z]]
         operator fun set(x: IntRange, y: IntRange, z: IntRange, value: Boolean) = with(zAxis[z]) {
-            for (xi in xAxis[x]) for (yi in yAxis[y]) data.set(idx(xi, yi, first), idx(xi, yi, last) + 1, value)
+            for (xi in xAxis[x]) for (yi in yAxis[y]) data[xi][yi].set(first, last + 1, value)
         }
 
         fun cardinality(): Long {
             var sum = 0L
-            var it = data.nextSetBit(0)
-            while (it >= 0) {
-                val x = it / (depth * height)
-                val y = it / depth % height
-                val z = it % (depth * height) % depth
-                sum += xAxis.sizes[x].toLong() * yAxis.sizes[y] * zAxis.sizes[z]
-                it = data.nextSetBit(it + 1)
+            for (x in 0 until xAxis.size) for (y in 0 until yAxis.size) {
+                val m = xAxis.sizes[x].toLong() * yAxis.sizes[y]
+                data[x][y].stream().forEach { z -> sum += m * zAxis.sizes[z] }
             }
             return sum
         }
 
         private class CompressedAxis private constructor(val sizes: IntArray, private val lookup: Map<Int, Int>) {
+            val size = sizes.size
             operator fun get(r: Int) = lookup[r] ?: error("unknown raw value $r")
             operator fun get(r: IntRange) = get(r.first) until get(r.last + 1)
 
