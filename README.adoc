@@ -77,7 +77,8 @@ image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day22CoordCompression.kt,16,
 image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day23.kt,16,title="Kotlin Day 23"]
 | 24 +
 image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day24.kt,16,title="Kotlin Day 24"]
-| 25
+| 25 +
+image:{img-kt}[link=kotlin/src/main/kotlin/year2021/Day25.kt,16,title="Kotlin Day 25"]
 |
 ||
 |===

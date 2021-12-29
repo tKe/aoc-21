@@ -62,6 +62,8 @@ class Year2021Test : FunSpec({
                     it.solutionsShouldReturn(part2 = 2758514936282235, inputFile = "example-part2.txt")
                 }
                 23 -> it.solutionsShouldReturn(part1 = 12521, part2 = 44169)
+                24 -> it.day shouldBe  24 // no examples...
+                25 -> it.solutionsShouldReturn(part1 = 58)
                 else -> fail("no tests for day ${it.day}")
             }
         }
